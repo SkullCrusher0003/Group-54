@@ -12,3 +12,15 @@
   (cond
     ((null? lst) '())
     (else (cons (f (car lst)) (my-map f (cdr lst))))))
+
+;; (insert-if-short x lst n): base case: an atom (neither a pair nor the empty list) is returned unchanged, and an empty list is handled by the same rule as any list because my-map over it gives the empty list; otherwise: rebuild the list by my-map, replacing each sublist with insert-if-short on it and keeping atoms, then put x in front exactly when the length of the original lst is less than n
+(define (insert-if-short x lst n)
+  (let ((new-items
+         (my-map (lambda (item)
+                   (cond
+                     ((or (pair? item) (null? item)) (insert-if-short x item n))
+                     (else item)))
+                 lst)))
+    (cond
+      ((< (my-length lst) n) (cons x new-items))
+      (else new-items))))
