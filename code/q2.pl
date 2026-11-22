@@ -67,3 +67,12 @@ expr_string(e(Op, Left, Right), String) :-
     expr_string_operand(left, Prec, Left, LeftString),
     expr_string_operand(right, Prec, Right, RightString),
     format(string(String), "~w~w~w", [LeftString, Op, RightString]).
+
+% equation_string(+LTree, +RTree, -String): String is the SWI-Prolog string
+% made of the expr_string/2 string of LTree, then the character "=", then the
+% expr_string/2 string of RTree. Neither tree is evaluated and the two sides
+% need not be equal.
+equation_string(LTree, RTree, String) :-
+    expr_string(LTree, LString),
+    expr_string(RTree, RString),
+    format(string(String), "~w=~w", [LString, RString]).
