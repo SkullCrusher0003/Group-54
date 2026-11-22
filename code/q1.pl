@@ -58,3 +58,8 @@ clue(8, Solution) :-
     memberchk(p(_, Dept, Lang, data), Solution),
     Dept == research,
     Lang \== javascript.
+
+% CLUE 9: The friend who prefers the AI project likes Python.
+clue(9, Solution) :-
+    memberchk(p(_, _, Lang, 'AI'), Solution),
+    Lang == python.
