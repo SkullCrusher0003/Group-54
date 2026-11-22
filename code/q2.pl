@@ -135,3 +135,10 @@ generate_equation(List, Equation) :-
 all_equations(List, Equations) :-
     findall(Equation, valid_equation(List, Equation), Found),
     sort(Found, Equations).
+
+% count_equations(+List, -N): N is the number of elements of the list Equations
+% for which all_equations(List, Equations) holds, i.e. the number of different
+% valid equations of List.
+count_equations(List, N) :-
+    all_equations(List, Equations),
+    length(Equations, N).
