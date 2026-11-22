@@ -23,3 +23,47 @@ expr_value(e(Op, Left, Right), Value) :-
     expr_value(Left, LeftValue),
     expr_value(Right, RightValue),
     apply_op(Op, LeftValue, RightValue, Value).
+
+% expr_string_prec(+Op, -Prec): Prec is the precedence level of the operator
+% Op: 1 for '+' and '-', 2 for '*' and '/' (a higher level binds tighter).
+expr_string_prec('+', 1).
+expr_string_prec('-', 1).
+expr_string_prec('*', 2).
+expr_string_prec('/', 2).
+
+% expr_string_parens(+Side, +ParentPrec, +Tree): an operand Tree on the side
+% Side (left or right) of an operator of precedence ParentPrec must be written
+% in parentheses: a left operand if its top operator has lower precedence than
+% the parent's, a right operand if its top operator has the same or lower
+% precedence. A single number n(_) never needs them (no clause matches).
+expr_string_parens(left, ParentPrec, e(Op, _, _)) :-
+    expr_string_prec(Op, Prec),
+    Prec < ParentPrec.
+expr_string_parens(right, ParentPrec, e(Op, _, _)) :-
+    expr_string_prec(Op, Prec),
+    Prec =< ParentPrec.
+
+% expr_string_operand(+Side, +ParentPrec, +Tree, -String): String is the
+% canonical string of the operand Tree, enclosed in parentheses exactly when
+% expr_string_parens/3 holds for Side, ParentPrec and Tree.
+% The if-then-else is used because "parentheses or not" is a two-way choice on
+% a test that must not leave a choice point.
+expr_string_operand(Side, ParentPrec, Tree, String) :-
+    expr_string(Tree, Inner),
+    (   expr_string_parens(Side, ParentPrec, Tree)
+    ->  format(string(String), "(~w)", [Inner])
+    ;   String = Inner
+    ).
+
+% expr_string(+Tree, -String): String is the SWI-Prolog string of the
+% expression tree Tree with no spaces: n(V) is V in decimal, and e(Op, L, R) is
+% the string of L, then Op, then the string of R, where L and R are
+% parenthesised by expr_string_parens/3 (operators left-associative, * and /
+% tighter than + and -). The tree is not evaluated.
+expr_string(n(Value), String) :-
+    format(string(String), "~d", [Value]).
+expr_string(e(Op, Left, Right), String) :-
+    expr_string_prec(Op, Prec),
+    expr_string_operand(left, Prec, Left, LeftString),
+    expr_string_operand(right, Prec, Right, RightString),
+    format(string(String), "~w~w~w", [LeftString, Op, RightString]).
