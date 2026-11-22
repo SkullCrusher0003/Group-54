@@ -13,3 +13,12 @@
 (define (print-inorder tree)
   (display (inorder-onto tree '()))
   (newline))
+
+;; (preorder-onto tree acc): base case: tree is '(): the answer is acc unchanged; otherwise: the answer is the node's value consed in front of the preorder list of the left subtree, which is built onto the preorder list of the right subtree onto acc, i.e. (cons value (preorder-onto left (preorder-onto right acc)))
+(define (preorder-onto tree acc)
+  (cond
+    ((null? tree) acc)
+    (else
+     (cons (car tree)
+           (preorder-onto (cadr tree)
+                          (preorder-onto (caddr tree) acc))))))
