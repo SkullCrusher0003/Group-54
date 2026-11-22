@@ -88,3 +88,9 @@ print_solution(Solution) :-
 main :-
     once(solution([1, 2, 3, 4, 5, 6, 7, 8], Solution)),
     print_solution(Solution).
+
+% count_solutions(+Active, -N): N is the number of candidates in which every
+% clue whose number is in Active holds; clues not in Active are ignored.
+count_solutions(Active, N) :-
+    findall(Solution, solution(Active, Solution), Solutions),
+    length(Solutions, N).
