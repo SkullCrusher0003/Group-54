@@ -81,3 +81,10 @@ solution(Active, Solution) :-
 print_solution(Solution) :-
     forall(member(p(Name, Dept, Lang, Project), Solution),
            format("~w = [~w, ~w, ~w]~n", [Name, Dept, Lang, Project])).
+
+% main: prints, in the print_solution/1 format, one solution of clues 1 to 8.
+% once/1 commits to the first solution found, because clues 1 to 8 allow more
+% than one and exactly one must be printed, once, with no choice point left.
+main :-
+    once(solution([1, 2, 3, 4, 5, 6, 7, 8], Solution)),
+    print_solution(Solution).
