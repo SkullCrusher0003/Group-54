@@ -68,3 +68,9 @@ clue(9, Solution) :-
 % holds in Solution; clues not in Active are not considered.
 clues_hold(Active, Solution) :-
     forall(member(N, Active), clue(N, Solution)).
+
+% solution(+Active, -Solution): Solution is a candidate in which every clue
+% whose number is in Active holds; clues not in Active are ignored.
+solution(Active, Solution) :-
+    candidate(Solution),
+    clues_hold(Active, Solution).
