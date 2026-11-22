@@ -12,3 +12,14 @@ apply_op('/', A, B, Value) :-
     B =\= 0,
     A mod B =:= 0,
     Value is A // B.
+
+% expr_value(+Tree, -Value): Value is the integer value of the expression tree
+% Tree, where n(V) has value V and e(Op, L, R) has the value obtained by
+% applying Op (by apply_op/4) to the values of L and R. It holds only if every
+% operation inside Tree is allowed by apply_op/4, so any inexact or
+% zero-divisor division anywhere in Tree makes it fail.
+expr_value(n(Value), Value).
+expr_value(e(Op, Left, Right), Value) :-
+    expr_value(Left, LeftValue),
+    expr_value(Right, RightValue),
+    apply_op(Op, LeftValue, RightValue, Value).
