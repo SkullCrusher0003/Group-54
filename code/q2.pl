@@ -127,3 +127,11 @@ valid_equation(List, Equation) :-
 % point; it also stops the search at the first valid equation.
 generate_equation(List, Equation) :-
     once(valid_equation(List, Equation)).
+
+% all_equations(+List, -Equations): Equations is the list of all strings Equation
+% for which valid_equation(List, Equation) holds, without duplicates and in the
+% standard order of terms (sort/2); it is [] when List has no valid equation.
+% findall/3 is used so that the result is one list and always succeeds.
+all_equations(List, Equations) :-
+    findall(Equation, valid_equation(List, Equation), Found),
+    sort(Found, Equations).
