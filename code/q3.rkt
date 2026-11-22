@@ -22,3 +22,12 @@
      (cons (car tree)
            (preorder-onto (cadr tree)
                           (preorder-onto (caddr tree) acc))))))
+
+;; (postorder-onto tree acc): base case: tree is '(): the answer is acc unchanged; otherwise: the answer is the postorder list of the left subtree built onto the postorder list of the right subtree built onto the node's value consed in front of acc, i.e. (postorder-onto left (postorder-onto right (cons value acc)))
+(define (postorder-onto tree acc)
+  (cond
+    ((null? tree) acc)
+    (else
+     (postorder-onto (cadr tree)
+                     (postorder-onto (caddr tree)
+                                     (cons (car tree) acc))))))
