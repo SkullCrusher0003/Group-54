@@ -63,3 +63,8 @@ clue(8, Solution) :-
 clue(9, Solution) :-
     memberchk(p(_, _, Lang, 'AI'), Solution),
     Lang == python.
+
+% clues_hold(+Active, +Solution): every clue whose number is in the list Active
+% holds in Solution; clues not in Active are not considered.
+clues_hold(Active, Solution) :-
+    forall(member(N, Active), clue(N, Solution)).
