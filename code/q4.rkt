@@ -24,3 +24,11 @@
     (cond
       ((< (my-length lst) n) (cons x new-items))
       (else new-items))))
+
+;; (print-insert-result): base case: none, there is no recursion; otherwise: read x, then read lst, then read n (in that order, each bound by let*), compute (insert-if-short x lst n), display the result, and finish with newline so the last value is void
+(define (print-insert-result)
+  (let* ((x (read))
+         (lst (read))
+         (n (read)))
+    (display (insert-if-short x lst n))
+    (newline)))
