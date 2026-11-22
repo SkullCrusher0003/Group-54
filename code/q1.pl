@@ -74,3 +74,10 @@ clues_hold(Active, Solution) :-
 solution(Active, Solution) :-
     candidate(Solution),
     clues_hold(Active, Solution).
+
+% print_solution(+Solution): prints, in list order, one line
+% "Name = [Dept, Lang, Project]" for each p(Name, Dept, Lang, Project) in
+% Solution, with every value written unquoted.
+print_solution(Solution) :-
+    forall(member(p(Name, Dept, Lang, Project), Solution),
+           format("~w = [~w, ~w, ~w]~n", [Name, Dept, Lang, Project])).
