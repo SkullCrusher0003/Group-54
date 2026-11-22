@@ -76,3 +76,31 @@ equation_string(LTree, RTree, String) :-
     expr_string(LTree, LString),
     expr_string(RTree, RString),
     format(string(String), "~w=~w", [LString, RString]).
+
+:- use_module(library(lists)).
+
+% expr_tree_op(?Op): Op is one of the four operators '+', '-', '*', '/'.
+expr_tree_op('+').
+expr_tree_op('-').
+expr_tree_op('*').
+expr_tree_op('/').
+
+% expr_tree(+Numbers, -Tree, -Value): Tree is an expression tree whose leaves
+% are, left to right, exactly the elements of Numbers (each used once, in
+% order), and Value is the integer value of Tree, where every operation in Tree
+% is allowed by apply_op/4. A single number N gives n(N) with Value N. A longer
+% list is split into a non-empty prefix and a non-empty suffix, the two parts
+% give subtrees L and R, and the tree is e(Op, L, R) for any operator Op whose
+% apply_op/4 holds for the two values. Different splits, operators and subtrees
+% give different trees, so every valid tree is a solution exactly once; [] has
+% no solution.
+expr_tree([Number], n(Number), Number).
+expr_tree(Numbers, e(Op, Left, Right), Value) :-
+    Numbers = [_, _|_],
+    append(LeftNumbers, RightNumbers, Numbers),
+    LeftNumbers = [_|_],
+    RightNumbers = [_|_],
+    expr_tree(LeftNumbers, Left, LeftValue),
+    expr_tree(RightNumbers, Right, RightValue),
+    expr_tree_op(Op),
+    apply_op(Op, LeftValue, RightValue, Value).
