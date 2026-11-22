@@ -119,3 +119,11 @@ valid_equation(List, Equation) :-
     expr_tree(LeftNumbers, LeftTree, Value),
     expr_tree(RightNumbers, RightTree, Value),
     equation_string(LeftTree, RightTree, Equation).
+
+% generate_equation(+List, ?Equation): Equation is the string of some valid
+% equation for List, i.e. valid_equation(List, Equation) holds; it holds for at
+% most one Equation (the first one found), and not at all if List has none.
+% once/1 is used because the spec asks for a single answer with no choice
+% point; it also stops the search at the first valid equation.
+generate_equation(List, Equation) :-
+    once(valid_equation(List, Equation)).
