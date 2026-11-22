@@ -18,3 +18,9 @@ clue(1, Solution) :-
     memberchk(p(Name, Dept, _, 'AI'), Solution),
     Dept \== research,
     Name \== 'Dana'.
+
+% CLUE 2: Alex does not work in development and does not prefer C++.
+clue(2, Solution) :-
+    memberchk(p('Alex', Dept, Lang, _), Solution),
+    Dept \== development,
+    Lang \== 'c++'.
