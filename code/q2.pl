@@ -104,3 +104,18 @@ expr_tree(Numbers, e(Op, Left, Right), Value) :-
     expr_tree(RightNumbers, Right, RightValue),
     expr_tree_op(Op),
     apply_op(Op, LeftValue, RightValue, Value).
+
+% valid_equation(+List, ?Equation): Equation is the string of an equation L=R
+% for List, that is, List splits into a non-empty prefix and a non-empty suffix,
+% L is an expression tree over the prefix and R one over the suffix (see
+% expr_tree/3), both have the same integer value, and Equation is the string of
+% L and R given by equation_string/3. Every (split, L, R) with equal values
+% gives one solution; a list with fewer than two numbers has none.
+valid_equation(List, Equation) :-
+    List = [_, _|_],
+    append(LeftNumbers, RightNumbers, List),
+    LeftNumbers = [_|_],
+    RightNumbers = [_|_],
+    expr_tree(LeftNumbers, LeftTree, Value),
+    expr_tree(RightNumbers, RightTree, Value),
+    equation_string(LeftTree, RightTree, Equation).
