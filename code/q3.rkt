@@ -31,3 +31,12 @@
      (postorder-onto (cadr tree)
                      (postorder-onto (caddr tree)
                                      (cons (car tree) acc))))))
+
+;; (print-all-traversals tree): base case: none needed, the empty tree gives '() from all three helpers so "()" is displayed on each line; otherwise: display the inorder list, newline, the preorder list, newline, the postorder list, and end with newline, which also makes the result void
+(define (print-all-traversals tree)
+  (display (inorder-onto tree '()))
+  (newline)
+  (display (preorder-onto tree '()))
+  (newline)
+  (display (postorder-onto tree '()))
+  (newline))
