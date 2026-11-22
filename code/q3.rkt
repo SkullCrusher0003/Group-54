@@ -40,3 +40,12 @@
   (newline)
   (display (postorder-onto tree '()))
   (newline))
+
+;; (tree-height tree): base case: tree is '(): the height is 0; otherwise: the height is 1 plus the larger of the heights of the left subtree and the right subtree, each computed once and bound with let
+(define (tree-height tree)
+  (cond
+    ((null? tree) 0)
+    (else
+     (let ((left-height (tree-height (cadr tree)))
+           (right-height (tree-height (caddr tree))))
+       (+ 1 (max left-height right-height))))))
