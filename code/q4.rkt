@@ -13,18 +13,6 @@
     ((null? lst) '())
     (else (cons (f (car lst)) (my-map f (cdr lst))))))
 
-;; (insert-if-short x lst n): base case: an atom (neither a pair nor the empty list) is returned unchanged, and an empty list is handled by the same rule as any list because my-map over it gives the empty list; otherwise: rebuild the list by my-map, replacing each sublist with insert-if-short on it and keeping atoms, then put x in front exactly when the length of the original lst is less than n
-(define (insert-if-short x lst n)
-  (let ((new-items
-         (my-map (lambda (item)
-                   (cond
-                     ((or (pair? item) (null? item)) (insert-if-short x item n))
-                     (else item)))
-                 lst)))
-    (cond
-      ((< (my-length lst) n) (cons x new-items))
-      (else new-items))))
-
 ;; (print-insert-result): base case: none, there is no recursion; otherwise: read x, then read lst, then read n (in that order, each bound by let*), compute (insert-if-short x lst n), display the result, and finish with newline so the last value is void
 (define (print-insert-result)
   (let* ((x (read))
@@ -46,3 +34,7 @@
                      (else new-items))))
                 (else tree)))))
     (lambda (lst) (process lst))))
+
+;; (insert-if-short x lst n): base case: none, there is no recursion of its own; otherwise: build the inserter for x whose length test is "less than n" with make-inserter, and apply it to lst
+(define (insert-if-short x lst n)
+  ((make-inserter x (lambda (len) (< len n))) lst))
