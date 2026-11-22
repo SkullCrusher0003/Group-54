@@ -58,3 +58,8 @@
     (else
      (+ (count-leaves (cadr tree))
         (count-leaves (caddr tree))))))
+
+;; (print-height-and-leaves tree): base case: none needed, the empty tree has height 0 and 0 leaves so "(0 0)" is displayed; otherwise: display the two-element list of (tree-height tree) and (count-leaves tree), then end the line with newline, which also makes the result void
+(define (print-height-and-leaves tree)
+  (display (list (tree-height tree) (count-leaves tree)))
+  (newline))
