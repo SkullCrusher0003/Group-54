@@ -32,3 +32,17 @@
          (n (read)))
     (display (insert-if-short x lst n))
     (newline)))
+
+;; (make-inserter x len-ok?): base case: none, it only returns a one-argument function (no recursion of its own); otherwise: the returned function calls the local helper (process tree) on its list
+;; (process tree): base case: an atom (neither a pair nor the empty list) is returned unchanged; otherwise: rebuild the list with my-map, replacing each element by (process element), then put x in front exactly when (len-ok? (my-length tree)) holds for the original tree
+(define (make-inserter x len-ok?)
+  (letrec ((process
+            (lambda (tree)
+              (cond
+                ((or (pair? tree) (null? tree))
+                 (let ((new-items (my-map process tree)))
+                   (cond
+                     ((len-ok? (my-length tree)) (cons x new-items))
+                     (else new-items))))
+                (else tree)))))
+    (lambda (lst) (process lst))))
