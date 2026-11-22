@@ -49,3 +49,12 @@
      (let ((left-height (tree-height (cadr tree)))
            (right-height (tree-height (caddr tree))))
        (+ 1 (max left-height right-height))))))
+
+;; (count-leaves tree): base case: tree is '(): there are 0 leaves; otherwise: if both subtrees are '() the node is a leaf and the answer is 1, else the answer is the number of leaves of the left subtree plus the number of leaves of the right subtree
+(define (count-leaves tree)
+  (cond
+    ((null? tree) 0)
+    ((and (null? (cadr tree)) (null? (caddr tree))) 1)
+    (else
+     (+ (count-leaves (cadr tree))
+        (count-leaves (caddr tree))))))
