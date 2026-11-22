@@ -6,3 +6,9 @@
     (cond
       ((null? rest-items) count)
       (else (walk (cdr rest-items) (+ count 1))))))
+
+;; (my-map f lst): base case: lst is empty, so the result is the empty list; otherwise: cons (f applied to the first element) onto the result of my-map on the rest of the list, which keeps the order
+(define (my-map f lst)
+  (cond
+    ((null? lst) '())
+    (else (cons (f (car lst)) (my-map f (cdr lst))))))
